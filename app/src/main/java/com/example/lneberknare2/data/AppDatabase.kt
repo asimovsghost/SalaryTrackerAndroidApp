@@ -8,20 +8,15 @@ import androidx.room.TypeConverters
 import com.example.lneberknare2.data.model.JobProfile
 import com.example.lneberknare2.data.model.WorkShift
 
-/**
- * Huvudklassen för databasen. Knyter samman allt:
- * - entities: Vilka tabeller som ska finnas.
- * - version: Databasens version. Måste höjas vid schemaändringar.
- * - TypeConverters: Talar om vilka konverterare som ska användas.
- */
-@Database(entities = [JobProfile::class, WorkShift::class], version = 1, exportSchema = false)
+@Database(
+    entities = [JobProfile::class, WorkShift::class],
+    version = 2, // <-- STEG 1: Öka versionen från 1 till 2
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun appDao(): AppDao
 
-    // Companion object med singleton-mönster för att säkerställa
-    // att endast en instans av databasen finns i hela appen.
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -32,10 +27,15 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "salary_tracker_database"
-                ).build()
+                )
+                    // STEG 2: Lägg till denna rad. Den raderar och bygger om databasen
+                    // om versionen ändras. Perfekt för utveckling.
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }
         }
     }
 }
+

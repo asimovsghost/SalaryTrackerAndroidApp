@@ -1,6 +1,5 @@
 package com.example.lneberknare2.ui.screens.job_profiles
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,8 +23,6 @@ import com.example.lneberknare2.ui.components.JobProfileDialog
 import java.text.NumberFormat
 import java.util.*
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JobProfilesScreen(
     viewModel: JobProfilesViewModel
@@ -34,24 +31,8 @@ fun JobProfilesScreen(
     var showDialog by remember { mutableStateOf(false) }
     var profileToEdit by remember { mutableStateOf<JobProfile?>(null) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Mina Jobbprofiler") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                profileToEdit = null
-                showDialog = true
-            }) {
-                Icon(Icons.Default.Add, contentDescription = "Lägg till jobbprofil")
-            }
-        }
-    ) { paddingValues ->
+    // Den yttre Scaffold har flyttats till AppNavigation
+    Box(modifier = Modifier.fillMaxSize()) {
         if (showDialog) {
             JobProfileDialog(
                 jobProfile = profileToEdit,
@@ -68,7 +49,7 @@ fun JobProfilesScreen(
         }
 
         LazyColumn(
-            modifier = Modifier.padding(paddingValues).padding(16.dp),
+            contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(jobProfiles) { profile ->
@@ -82,8 +63,21 @@ fun JobProfilesScreen(
                 )
             }
         }
+
+        FloatingActionButton(
+            onClick = {
+                profileToEdit = null
+                showDialog = true
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        ) {
+            Icon(Icons.Default.Add, contentDescription = "Lägg till jobbprofil")
+        }
     }
 }
+
 
 @Composable
 fun JobProfileItem(
@@ -124,3 +118,4 @@ fun JobProfileItem(
         }
     }
 }
+
