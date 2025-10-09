@@ -19,7 +19,6 @@ import com.example.lneberknare2.services.ISalaryCalculatorService
 import com.example.lneberknare2.services.SalaryCalculation
 import com.example.lneberknare2.services.TaxApproximationService
 import com.example.lneberknare2.ui.theme.Löneberäknare2Theme
-import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.Locale
 
