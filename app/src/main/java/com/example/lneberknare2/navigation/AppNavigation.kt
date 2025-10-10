@@ -26,7 +26,7 @@ import java.time.LocalDate
 sealed class Screen(val route: String, val label: String? = null, val icon: ImageVector? = null) {
     object Calendar : Screen("calendar", "Kalender", Icons.Default.CalendarMonth)
     object JobProfiles : Screen("job_profiles", "Profiler", Icons.Default.Person)
-    object DayView : Screen("day_view/{date}") // Ingen label/ikon, inte i bottenmenyn
+    object DayView : Screen("day_view/{date}") 
 }
 
 val bottomBarItems = listOf(
@@ -86,7 +86,7 @@ fun AppNavigation(application: SalaryTrackerApplication) {
                 CalendarScreen(
                     viewModel = viewModel(factory = ViewModelFactory(application)),
                     onDayClick = { date ->
-                        navController.navigate("${Screen.DayView.route.replace("{date}", date.toString())}")
+                        navController.navigate("day_view/${date}")
                     }
                 )
             }
@@ -111,4 +111,3 @@ fun AppNavigation(application: SalaryTrackerApplication) {
         }
     }
 }
-

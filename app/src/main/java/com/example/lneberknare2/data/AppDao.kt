@@ -25,6 +25,9 @@ interface AppDao {
     @Query("SELECT * FROM work_shifts WHERE date = :date ORDER BY startTime ASC")
     fun getWorkShiftsForDate(date: LocalDate): Flow<List<WorkShift>>
 
+    @Query("SELECT * FROM work_shifts WHERE date BETWEEN :startDate AND :endDate")
+    fun getWorkShiftsForMonth(startDate: LocalDate, endDate: LocalDate): Flow<List<WorkShift>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWorkShift(workShift: WorkShift)
 
